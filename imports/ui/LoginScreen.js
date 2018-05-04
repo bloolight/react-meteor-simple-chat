@@ -66,7 +66,7 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <div className="login-form">
+      <React.Fragment>
         <h2>Simple Chat App (with React and Meteor)</h2>
         <br />
 
@@ -79,7 +79,7 @@ class LoginScreen extends Component {
           >
             <ControlLabel>Please choose your screen name</ControlLabel>
             <FormControl
-              bsSize="sm"
+              bsSize="lg"
               type="text"
               value={this.state.username}
               placeholder="Enter text"
@@ -89,7 +89,7 @@ class LoginScreen extends Component {
           </FormGroup>
           <Button type="submit" bsStyle="primary">Submit</Button>
         </form>
-      </div>
+      </React.Fragment>
     );
   }
 }

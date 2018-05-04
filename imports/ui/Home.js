@@ -12,7 +12,7 @@ export default class App extends Component {
           const { user } = context.state;
 
           return (
-            user ? <ChatContainer /> : <LoginScreen />
+            user ? <ChatContainer user={user} /> : <LoginScreen />
           )
         }}
       </Consumer>
