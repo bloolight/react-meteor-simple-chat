@@ -19,6 +19,22 @@ div.jumbotron > .container {
   margin-right: 5px;
 }
 
-.main-chat-screen .message {
+.main-chat-screen form.form-inline {
+  margin-left: 15px;
+}
+
+.main-chat-screen .message-input {
   min-width: 250px;
+}
+
+.main-chat-screen p.message-text {
+  margin-bottom: 0;
+}
+
+.main-chat-screen .clearfix {
+  line-height: 0;
+}
+
+.main-chat-screen p.message-text .badge {
+  font-size: 20px;
 }

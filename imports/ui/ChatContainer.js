@@ -14,7 +14,7 @@ class ChatContainer extends Component {
   }
 
   handleChatClick(chat) {
-    this.props.history.push(`/chat/${chat.id}`);
+    this.props.history.push(`/chat/${chat._id}`);
   }
 
   handleCreateChat() {
@@ -22,13 +22,6 @@ class ChatContainer extends Component {
   }
 
   render() {
-    const chats = [
-      { id: 1, title: 'Chat 1'},
-      { id: 2, title: 'Chat 2'},
-      { id: 3, title: 'Chat 3'},
-      { id: 4, title: 'Chat 4'}
-    ]
-
     const {
       state: { user },
       actions: {handleLogout }
@@ -40,7 +33,7 @@ class ChatContainer extends Component {
           <h2>Hello, {user}</h2>
           <Row className="show-grid">
             <Col xs={12} md={8}>
-              <ChatList chats={chats} handleChatClick={this.handleChatClick}></ChatList>
+              <ChatList handleChatClick={this.handleChatClick}></ChatList>
             </Col>
             <Col xs={12} md={4}>
               <ButtonGroup vertical>

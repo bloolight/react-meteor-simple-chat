@@ -10,11 +10,17 @@ class ChatMessage extends Component {
       editing: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({ message: e.target.value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.info('this.state.message', this.state.message);
+    this.props.addMessage(this.state.message);
+    this.setState({ message: ''});
   }
 
   render() {
@@ -26,7 +32,8 @@ class ChatMessage extends Component {
             placeholder="Enter a message"
             autoComplete="off"
             value={this.state.message}
-            className="message"
+            onChange={this.handleChange}
+            className="message-input"
           />
         </FormGroup>
         <Button type="submit">Send message</Button>
@@ -36,7 +43,7 @@ class ChatMessage extends Component {
 }
 
 ChatMessage.propTypes = {
-
+  addMessage: PropTypes.func.isRequired
 };
 
 export default ChatMessage;

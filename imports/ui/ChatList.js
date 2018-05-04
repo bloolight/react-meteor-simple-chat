@@ -1,6 +1,8 @@
 import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { withTracker } from 'meteor/react-meteor-data';
+import * as ChatRooms from "../api/chatRooms";
 
 class ChatList extends Component {
   constructor(props) {
@@ -8,21 +10,32 @@ class ChatList extends Component {
   }
 
   render() {
-    const { chats, handleChatClick } = this.props;
+    const { chatRooms, handleChatClick } = this.props;
 
     return (
-      <ListGroup className="chats-list">
-        {chats.map(chat => {
-          return <ListGroupItem key={chat.id} onClick={handleChatClick.bind(null, chat)}>{chat.title}</ListGroupItem>
-        })}
-      </ListGroup>
+      <React.Fragment>
+        <ListGroup className="chats-list">
+          {chatRooms.map(chat => {
+            return (
+              <ListGroupItem key={chat._id} onClick={handleChatClick.bind(null, chat)}>
+                {chat.title} ({chat.members ? chat.members.length : 0} participants)
+              </ListGroupItem>
+            )
+          })}
+        </ListGroup>
+        <pre>{JSON.stringify(this.props.chatRooms, null, ' ')}</pre>
+      </React.Fragment>
     );
   }
 }
 
 ChatList.propTypes = {
-  chats: PropTypes.array.isRequired ,
+  chatRooms: PropTypes.array.isRequired,
   handleChatClick: PropTypes.func.isRequired
 }
 
-export default ChatList;
+export default withTracker(() => {
+  return {
+    chatRooms: ChatRooms.getAllChatRooms()
+  }
+})(ChatList);

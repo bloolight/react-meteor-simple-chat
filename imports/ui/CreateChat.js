@@ -1,8 +1,11 @@
+import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Alert, Button, Checkbox, ControlLabel, FormGroup, FormControl } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import BackToChatsButton from './BackToChatsButton';
+import { createChatRoom } from '../api/chatRooms';
 
 class CreateChat extends Component {
   constructor(props) {
@@ -65,6 +68,14 @@ class CreateChat extends Component {
       this.setState({ alertVisible: true });
       return;
     }
+
+    createChatRoom(this.state.title, this.state.desc, this.state.members, (err, _id) => {
+      if (err) {
+        return toast.error('There was an error');
+      }
+
+      this.props.history.push(`/chat/${_id}`);
+    });
   }
 
   isValidChatMembers() {
@@ -131,6 +142,10 @@ class CreateChat extends Component {
       </React.Fragment>
     );
   }
+}
+
+CreateChat.propTypes = {
+  history: PropTypes.object.isRequired,
 }
 
 export default CreateChat;
