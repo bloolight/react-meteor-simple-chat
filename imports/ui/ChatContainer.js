@@ -13,7 +13,7 @@ class ChatContainer extends Component {
   }
 
   handleChatClick(chat) {
-    console.info('chat: ', chat);
+    this.props.history.push(`/chat/${chat.id}`);
   }
 
   render() {
@@ -24,8 +24,10 @@ class ChatContainer extends Component {
       { id: 4, title: 'Chat 4'}
     ]
 
-    const { user} = this.props;
-    const { actions: {handleLogout} } = this.props.context;
+    const {
+      state: { user },
+      actions: {handleLogout }
+    } = this.props.context;
 
     return (
       <div className="chat-container">
@@ -49,9 +51,8 @@ class ChatContainer extends Component {
 }
 
 ChatContainer.propTypes = {
-  user: PropTypes.string.isRequired,
   context: PropTypes.object.isRequired,
-  handleLogout: PropTypes.func.isRequired
+  history: PropTypes.object.isRequired,
 }
 
 export default WithRootContext(ChatContainer);
