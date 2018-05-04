@@ -1,0 +1,28 @@
+{
+  "plugins": [
+      "react"
+  ],
+  "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
+  "env": {
+      "es6":     true,
+      "browser": true,
+      "node":    true,
+      "mocha":   true
+  },
+  "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+  ],
+  "rules": {
+    "react/prop-types": ["warn", { "ignore": ["children"] }],
+    "react/jsx-closing-tag-location": ["warn"],
+    "react/no-did-mount-set-state": ["warn"],
+    "react/no-did-update-set-state": ["warn"]
+  }
+}
