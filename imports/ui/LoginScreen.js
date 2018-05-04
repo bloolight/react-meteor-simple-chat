@@ -1,12 +1,15 @@
+import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
-import { Alert, Button, ControlLabel, FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
+import { Alert, Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+
+import { WithRootContext } from '../context/WithContext';
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
+      username: '',
       alertVisible: false
     };
 
@@ -17,14 +20,14 @@ class LoginScreen extends Component {
   }
 
   getValidationState() {
-    const length = this.state.value.length;
+    const length = this.state.username.length;
     if (length === 0) { return null; }
 
     return length >= 5 ? 'success' : 'error';
   }
 
   handleChange(e) {
-    this.setState({ value: e.target.value });
+    this.setState({ username: e.target.value });
     this.handleDismiss();
   }
 
@@ -41,6 +44,8 @@ class LoginScreen extends Component {
       return;
     }
 
+    const { actions: {handleLogin} } = this.props.context;
+    handleLogin(this.state.username);
   }
 
   renderAlert() {
@@ -76,7 +81,7 @@ class LoginScreen extends Component {
             <FormControl
               bsSize="sm"
               type="text"
-              value={this.state.value}
+              value={this.state.username}
               placeholder="Enter text"
               onChange={this.handleChange}
             />
@@ -89,4 +94,8 @@ class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen;
+LoginScreen.propTypes = {
+  context: PropTypes.object
+}
+
+export default WithRootContext(LoginScreen);

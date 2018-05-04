@@ -8,6 +8,9 @@ export class Provider extends Component {
     this.state = {
       user: null,
     };
+
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleLogin(user) {
