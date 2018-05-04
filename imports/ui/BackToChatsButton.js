@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
-const BackToChatsButton = () => {
+const BackToChatsButton = (props) => {
   return (
-    <Link to="/">
+    <Link to="/" {...props}>
       <Button bsStyle="link">
-        Go back to chats
+        Go back to chat list
       </Button>
     </Link>
   );

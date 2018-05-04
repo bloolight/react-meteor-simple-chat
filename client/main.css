@@ -8,3 +8,12 @@ div.jumbotron > .container {
 .chat-container .btn-group-vertical button {
   margin-bottom: 20px;
 }
+
+
+.chats-list button {
+  margin-bottom: 2px;
+}
+
+.create-chat-from button {
+  margin-right: 5px;
+}

@@ -11,7 +11,7 @@ class ChatList extends Component {
     const { chats, handleChatClick } = this.props;
 
     return (
-      <ListGroup>
+      <ListGroup className="chats-list">
         {chats.map(chat => {
           return <ListGroupItem key={chat.id} onClick={handleChatClick.bind(null, chat)}>{chat.title}</ListGroupItem>
         })}

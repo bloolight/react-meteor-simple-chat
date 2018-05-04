@@ -10,10 +10,15 @@ class ChatContainer extends Component {
     super(props);
 
     this.handleChatClick = this.handleChatClick.bind(this);
+    this.handleCreateChat = this.handleCreateChat.bind(this);
   }
 
   handleChatClick(chat) {
     this.props.history.push(`/chat/${chat.id}`);
+  }
+
+  handleCreateChat() {
+    this.props.history.push(`/create`);
   }
 
   render() {
@@ -39,7 +44,7 @@ class ChatContainer extends Component {
             </Col>
             <Col xs={12} md={4}>
               <ButtonGroup vertical>
-                <Button bsStyle="primary">Create new chat</Button>
+                <Button bsStyle="primary" onClick={this.handleCreateChat}>Create new chat</Button>
                 <Button bsStyle="link" onClick={handleLogout}>Logout</Button>
               </ButtonGroup>
             </Col>
