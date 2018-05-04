@@ -26,6 +26,7 @@ class ChatMessage extends Component {
             placeholder="Enter a message"
             autoComplete="off"
             value={this.state.message}
+            className="message"
           />
         </FormGroup>
         <Button type="submit">Send message</Button>

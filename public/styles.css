@@ -1,0 +1,24 @@
+body {
+  background-color: #eee;
+}
+
+div.jumbotron > .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-container .btn-group-vertical button {
+  margin-bottom: 20px;
+}
+
+.chats-list button {
+  margin-bottom: 2px;
+}
+
+.create-chat-from button {
+  margin-right: 5px;
+}
+
+.main-chat-screen .message {
+  min-width: 250px;
+}

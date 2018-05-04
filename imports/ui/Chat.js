@@ -17,7 +17,7 @@ class Chat extends Component {
     ];
 
     return (
-      <div>
+      <div className="main-chat-screen">
         <Grid>
           <Row className="show-grid">
             <Col xs={3} xsOffset={9}>
