@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Alert, Button, Checkbox, ControlLabel, FormGroup, FormControl } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { withTracker } from 'meteor/react-meteor-data';
 
-import BackToChatsButton from './BackToChatsButton';
+import { WithRootContext } from '../context/WithContext';
+import * as UsersApi from '../api/users';
 import { createChatRoom } from '../api/chatRooms';
+import BackToChatsButton from './BackToChatsButton';
 
 class CreateChat extends Component {
   constructor(props) {
@@ -124,9 +127,17 @@ class CreateChat extends Component {
           </FormGroup>
           <FormGroup>
             <ControlLabel>Select participants</ControlLabel>
-            <Checkbox onChange={this.handleCheckbox} value="1">1</Checkbox>
-            <Checkbox onChange={this.handleCheckbox} value="2">2</Checkbox>
-            <Checkbox onChange={this.handleCheckbox} value="3">3</Checkbox>
+            {this.props.users.map(u => {
+              return (
+                <Checkbox
+                  key={u._id}
+                  onChange={this.handleCheckbox}
+                  value={u._id}
+                >
+                  {u.username}
+                </Checkbox>
+              )
+            })}
           </FormGroup>
 
           <Button bsStyle="primary" type="submit">
@@ -146,6 +157,11 @@ class CreateChat extends Component {
 
 CreateChat.propTypes = {
   history: PropTypes.object.isRequired,
+  users: PropTypes.array
 }
 
-export default CreateChat;
+export default withTracker(() => {
+  return {
+    users: UsersApi.getUsers()
+  }
+})(WithRootContext(CreateChat));

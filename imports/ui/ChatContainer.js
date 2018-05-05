@@ -30,7 +30,7 @@ class ChatContainer extends Component {
     return (
       <div className="chat-container">
         <Grid>
-          <h2>Hello, {user}</h2>
+          <h2>Hello, {user.username}</h2>
           <Row className="show-grid">
             <Col xs={12} md={8}>
               <ChatList handleChatClick={this.handleChatClick}></ChatList>

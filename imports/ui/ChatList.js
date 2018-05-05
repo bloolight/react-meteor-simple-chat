@@ -2,7 +2,8 @@ import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
-import * as ChatRooms from "../api/chatRooms";
+
+import * as ChatRoomsApi from "../api/chatRooms";
 
 class ChatList extends Component {
   constructor(props) {
@@ -36,6 +37,6 @@ ChatList.propTypes = {
 
 export default withTracker(() => {
   return {
-    chatRooms: ChatRooms.getAllChatRooms()
+    chatRooms: ChatRoomsApi.getAllChatRooms()
   }
 })(ChatList);

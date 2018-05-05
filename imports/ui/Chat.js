@@ -1,11 +1,20 @@
 import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
-import { Col, Grid, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
+import {
+  Col,
+  Grid,
+  Row,
+  ListGroup,
+  ListGroupItem,
+  PageHeader
+} from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import { toast } from 'react-toastify';
 
-import * as ChatMessages from '../api/chatMessage';
-import * as ChatRooms from '../api/chatRooms';
+import { WithRootContext } from '../context/WithContext';
+import * as ChatMessagesApi from '../api/chatMessage';
+import * as ChatRoomsApi from '../api/chatRooms';
+import * as UsersApi from '../api/users';
 import UsersDropdown from './UsersDropdown';
 import ChatMessage from './ChatMessage';
 import BackToChatsButton from './BackToChatsButton';
@@ -19,20 +28,20 @@ class Chat extends Component {
     }
 
     this.addMessage = this.addMessage.bind(this);
+    this.addUser = this.addUser.bind(this);
   }
-
 
   componentWillMount() {
     const { id } = this.props.match.params;
     this.setState({chatId: id})
   }
 
-
   addMessage(message) {
-    console.info('add message',  message);
-    ChatMessages.addMessage(
+    const { user } = this.props.context.state;
+
+    ChatMessagesApi.addMessage(
       this.state.chatId,
-      'userID',
+      user._id,
       message,
       (err) => {
         if (err) {
@@ -41,39 +50,45 @@ class Chat extends Component {
       }
     );
   }
+
+  addUser(userId) {
+    ChatRoomsApi.addChatMember(this.state.chatId, userId);
+  }
+
   render() {
-
-    const { chatRoomInfo, messages } = this.props;
-    const chatMembers = chatRoomInfo.members || [];
-
-    const chatRoomMembers = chatMembers.map(member => {
-      return {
-        _id: member,
-        name: `User ${member}`
-      }
-    });
+    const { allUsers, chatRoomInfo, chatRoomMembers, messages } = this.props;
+    const membersIds = chatRoomMembers.map(c => c._id);
 
     return (
       <div className="main-chat-screen">
+        <BackToChatsButton className="pull-right" />
         <Grid>
           <Row className="show-grid">
-            <Col xs={3} xsOffset={9}>
-              <BackToChatsButton />
+            <Col xs={9}>
+              <PageHeader>
+              { chatRoomInfo.title } <small>{ chatRoomInfo.desc }</small>
+              </PageHeader>
+            </Col>
+            <Col xs={3}>
+              <h3>Participants</h3>
             </Col>
           </Row>
           <Row className="show-grid">
             <Col xs={12} md={8}>
-              <h3>{ chatRoomInfo.title }</h3>
               <MessageList messages={messages} />
             </Col>
             <Col xs={12} md={4}>
-              <h3>Participants</h3>
               <ListGroup>
                 {chatRoomMembers.map(user => {
-                  return <ListGroupItem key={user._id}>{user.name}</ListGroupItem>
+                  return <ListGroupItem key={user._id}>{user.username}</ListGroupItem>
                 })}
               </ListGroup>
-              <UsersDropdown title="Add User to Chat"></UsersDropdown>
+              <UsersDropdown
+                title="Add User to Chat"
+                users={allUsers}
+                disable={membersIds}
+                handleSelect={this.addUser}
+              />
             </Col>
           </Row>
         </Grid>
@@ -87,15 +102,22 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
+  allUsers: PropTypes.array,
   match: PropTypes.object.isRequired,
   messages: PropTypes.array,
-  chatRoomInfo: PropTypes.object.isRequired
+  context: PropTypes.object,
+  chatRoomInfo: PropTypes.object.isRequired,
+  chatRoomMembers: PropTypes.array
 }
 
 export default withTracker((props) => {
   const chatId = props.match.params.id;
+  const chatRoomInfo = ChatRoomsApi.getChatRoom(chatId);
+
   return {
-    messages: ChatMessages.getMessages(chatId),
-    chatRoomInfo: ChatRooms.getChatRoom(chatId)
+    messages: ChatMessagesApi.getMessages(chatId),
+    chatRoomInfo,
+    chatRoomMembers: UsersApi.getUsersByIds(chatRoomInfo.members),
+    allUsers: UsersApi.getUsers()
   }
-})(Chat);
+})(WithRootContext(Chat));

@@ -23,6 +23,9 @@ div.jumbotron > .container {
   margin-left: 15px;
 }
 
+.main-chat-screen .page-header h1 {
+  font-size: 32px;
+}
 .main-chat-screen .message-input {
   min-width: 250px;
 }
@@ -37,4 +40,13 @@ div.jumbotron > .container {
 
 .main-chat-screen p.message-text .badge {
   font-size: 20px;
+}
+
+.main-chat-screen p.message-text .badge.pull-right {
+  background-color: #fff;
+  color: #666;
+}
+
+.dropdown-menu li.disabled {
+  opacity: 0.5;
 }

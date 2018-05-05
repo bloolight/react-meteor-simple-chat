@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+
+import * as UsersApi from '../api/users';
 
 const Context = React.createContext();
 
@@ -6,15 +9,29 @@ export class Provider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      user: null
     };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogin(user) {
-    this.setState({user});
+  handleLogin(screenName) {
+
+    const user = UsersApi.findUserByUsername(screenName);
+
+    if (user) {
+      return this.setState({ user });
+    }
+
+    UsersApi.createUser(screenName, (err, id) => {
+      if (err) {
+        return toast.error('There was an error');
+      }
+
+      const newUser = UsersApi.findUser(id);
+      return this.setState({ user: newUser });
+    })
   }
 
   handleLogout() {

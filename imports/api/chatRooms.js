@@ -23,8 +23,14 @@ export const getAllChatRooms = () => {
 }
 
 export const getChatRoom = (chatId) => {
-  const rr = ChatRooms.findOne({ _id: chatId });
-  return rr;
+  return ChatRooms.findOne({ _id: chatId });
+}
+
+export const addChatMember = (chatId, userId) => {
+  ChatRooms.update(
+    { _id: chatId },
+    { $push: { members: userId }}
+  );
 }
 
 export default ChatRooms;
