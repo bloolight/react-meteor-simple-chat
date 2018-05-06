@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
 import {
+  Button,
   Col,
   Grid,
   Row,
@@ -29,10 +30,12 @@ class Chat extends Component {
       user: null
     }
 
-    this.handleMessageClick = this.handleMessageClick.bind(this);
     this.addMessage = this.addMessage.bind(this);
-    this.deleteMessage = this.deleteMessage.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleMessageClick = this.handleMessageClick.bind(this);
+    this.renderDeleteChatButton = this.renderDeleteChatButton.bind(this);
   }
 
   componentWillMount() {
@@ -96,8 +99,43 @@ class Chat extends Component {
     this.setState({ message });
   }
 
+  handleDelete() {
+    this.props.history.push('/');
+
+    ChatRoomsApi.deleteChat(
+      this.state.chatId,
+      err => {
+        if (err) {
+          return toast.error('Error deleting chat room');
+        }
+      }
+    )
+  }
+
   addUser(userId) {
     ChatRoomsApi.addChatMember(this.state.chatId, userId);
+  }
+
+  renderDeleteChatButton() {
+    const { chatRoomInfo } = this.props;
+    const { user } = this.state;
+
+    if (chatRoomInfo.owner !== user._id) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <br/><br/>
+        <Button
+          className="pull-right"
+          type="button"
+          bsStyle="danger"
+          onClick={this.handleDelete}>
+          Delete
+        </Button>
+      </React.Fragment>
+    )
   }
 
   render() {
@@ -107,6 +145,8 @@ class Chat extends Component {
     return (
       <div className="main-chat-screen">
         <BackToChatsButton className="pull-right" />
+        { this.renderDeleteChatButton() }
+
         <Grid>
           <Row className="show-grid">
             <Col xs={9}>
@@ -153,17 +193,23 @@ Chat.propTypes = {
   messages: PropTypes.array,
   context: PropTypes.object,
   chatRoomInfo: PropTypes.object.isRequired,
-  chatRoomMembers: PropTypes.array
+  chatRoomMembers: PropTypes.array,
+  history: PropTypes.object.isRequired
 }
 
 export default withTracker((props) => {
   const chatId = props.match.params.id;
   const chatRoomInfo = ChatRoomsApi.getChatRoom(chatId);
+  let chatRoomMembers = [];
+
+  if (chatRoomInfo) {
+    chatRoomMembers = UsersApi.getUsersByIds(chatRoomInfo.members)
+  }
 
   return {
     messages: ChatMessagesApi.getMessages(chatId),
     chatRoomInfo,
-    chatRoomMembers: UsersApi.getUsersByIds(chatRoomInfo.members),
+    chatRoomMembers,
     allUsers: UsersApi.getUsers()
   }
 })(WithRootContext(Chat));

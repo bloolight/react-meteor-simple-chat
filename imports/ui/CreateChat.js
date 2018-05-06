@@ -72,13 +72,19 @@ class CreateChat extends Component {
       return;
     }
 
-    createChatRoom(this.state.title, this.state.desc, this.state.members, (err, _id) => {
-      if (err) {
-        return toast.error('There was an error');
-      }
+    createChatRoom(
+      this.state.title,
+      this.state.desc,
+      this.state.members,
+      this.props.context.state.user._id,
+      (err, _id) => {
+        if (err) {
+          return toast.error('There was an error');
+        }
 
-      this.props.history.push(`/chat/${_id}`);
-    });
+        this.props.history.push(`/chat/${_id}`);
+      }
+    );
   }
 
   isValidChatMembers() {
@@ -157,7 +163,8 @@ class CreateChat extends Component {
 
 CreateChat.propTypes = {
   history: PropTypes.object.isRequired,
-  users: PropTypes.array
+  users: PropTypes.array,
+  context: PropTypes.object
 }
 
 export default withTracker(() => {

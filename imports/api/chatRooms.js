@@ -3,8 +3,7 @@ import { Mongo } from 'meteor/mongo';
 // Create Collection
 let ChatRooms = new Mongo.Collection('chat_rooms');
 
-export const createChatRoom = (title, desc, members, callback) => {
-
+export const createChatRoom = (title, desc, members, owner, callback) => {
   const createdAt = new Date();
 
   ChatRooms.insert(
@@ -12,6 +11,7 @@ export const createChatRoom = (title, desc, members, callback) => {
       title,
       desc,
       members,
+      owner,
       createdAt
     },
     callback
@@ -31,6 +31,13 @@ export const addChatMember = (chatId, userId) => {
     { _id: chatId },
     { $push: { members: userId }}
   );
+}
+
+export const deleteChat = (chatId, callback) => {
+  ChatRooms.remove(
+    chatId,
+    callback
+  )
 }
 
 export default ChatRooms;
