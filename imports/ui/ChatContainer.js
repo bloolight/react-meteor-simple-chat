@@ -33,7 +33,7 @@ class ChatContainer extends Component {
           <h2>Hello, {user.username}</h2>
           <Row className="show-grid">
             <Col xs={12} md={8}>
-              <ChatList handleChatClick={this.handleChatClick}></ChatList>
+              <ChatList user={user} handleChatClick={this.handleChatClick}></ChatList>
             </Col>
             <Col xs={12} md={4}>
               <ButtonGroup vertical>

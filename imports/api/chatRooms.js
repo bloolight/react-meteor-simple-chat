@@ -22,6 +22,13 @@ export const getAllChatRooms = () => {
   return ChatRooms.find({}, { sort: { createdAt: -1 } }).fetch();
 }
 
+export const getUserChatRooms = (userId) => {
+  return ChatRooms.find(
+    { members: userId },
+    { sort: { createdAt: -1 } }
+  ).fetch();
+}
+
 export const getChatRoom = (chatId) => {
   return ChatRooms.findOne({ _id: chatId });
 }

@@ -27,19 +27,19 @@ class ChatList extends Component {
             </ListGroup>
           : <Well bsSize="large">Create a chat and it will show up here</Well>
         }
-        <pre>{JSON.stringify(this.props.chatRooms, null, ' ')}</pre>
       </React.Fragment>
     );
   }
 }
 
 ChatList.propTypes = {
+  user: PropTypes.object.isRequired,
   chatRooms: PropTypes.array.isRequired,
   handleChatClick: PropTypes.func.isRequired
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
   return {
-    chatRooms: ChatRoomsApi.getAllChatRooms()
+    chatRooms: ChatRoomsApi.getUserChatRooms(props.user._id)
   }
 })(ChatList);
