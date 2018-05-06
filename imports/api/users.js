@@ -1,3 +1,7 @@
+/**
+ * API methods for the users collection
+ */
+
 import { Mongo } from 'meteor/mongo';
 
 // Create Collection

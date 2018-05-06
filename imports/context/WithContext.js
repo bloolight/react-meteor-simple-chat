@@ -1,3 +1,7 @@
+/**
+ * Convinient HOC for exposing Root Context to the child components(consumers)
+*/
+
 import React from 'react';
 
 import { Consumer } from './RootContext';

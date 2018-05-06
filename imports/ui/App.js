@@ -11,18 +11,22 @@ export default class App extends Component {
   render() {
     return (
       <Provider>
+        {/* Placeholder component, for toast used throughout the app */}
         <ToastContainer
           autoClose={2500}
           hideProgressBar
           newestOnTop
           transition={Slide}
         />
+
+        {/* Main Layout */}
         <Jumbotron>
           <Grid bsClass="container">
             <Consumer>
               {context => {
                 const { user } = context.state;
 
+                // Based on logged state, render either Home, or LoginScreen component
                 return user ? <Home /> : <LoginScreen />
               }}
             </Consumer>

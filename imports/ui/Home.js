@@ -1,3 +1,6 @@
+/**
+ * Basically, the route setup used in the whole application
+ */
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 

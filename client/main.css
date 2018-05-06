@@ -1,4 +1,4 @@
-/* CSS declarations go here */
-/*  Styles moved to styles.css to be able to override bootstrap styles,
-    as main.css gets injeceted prior to 3rd party libraries
+/**
+* Styles moved to styles.css, to enable overriding bootstrap styles,
+* as main.css gets injeceted prior to 3rd party libraries
 */

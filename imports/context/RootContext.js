@@ -1,3 +1,7 @@
+/**
+ * Main Context API, containing login/ logout methods, as well user state
+ */
+
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 
