@@ -14,6 +14,7 @@ export class Provider extends Component {
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.setUser = this.setUser.bind(this);
   }
 
   handleLogin(screenName) {
@@ -30,7 +31,7 @@ export class Provider extends Component {
       }
 
       const newUser = UsersApi.findUser(id);
-      return this.setState({ user: newUser });
+      this.setUser(newUser);
     })
   }
 
@@ -39,13 +40,18 @@ export class Provider extends Component {
     this.setState({user});
   }
 
+  setUser(user) {
+    this.setState({ user });
+  }
+
   render() {
     return (
       <Context.Provider value={{
         state: this.state,
         actions: {
           handleLogin: this.handleLogin,
-          handleLogout: this.handleLogout
+          handleLogout: this.handleLogout,
+          setUser: this.setUser
         }
       }}>
         {this.props.children}

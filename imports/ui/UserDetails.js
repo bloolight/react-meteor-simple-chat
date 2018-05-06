@@ -59,15 +59,14 @@ class UserDetails extends Component {
           return toast.error('There was an error');
         }
 
+        const updatedUser = UsersApi.findUserByUsername(this.state.username);
+        this.props.context.actions.setUser(updatedUser);
         toast.success('User details updated');
       }
     );
   }
 
   render() {
-
-    console.info('currentUser', this.props.user);
-
     return (
       <React.Fragment>
         <BackToChatsButton className="pull-right" />
