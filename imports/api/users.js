@@ -35,4 +35,23 @@ export const getUsersByIds = (userIds = []) => {
   }}).fetch();
 }
 
+export const editDetails = (userId, username, name, email, callback) => {
+  const updatedAt = new Date();
+  username = username.toLowerCase();
+
+  Users.update(
+    {
+      _id: userId
+    },
+    { $set: {
+        username,
+        name,
+        email,
+        updatedAt
+      }
+    },
+    callback
+  )
+}
+
 export default Users;

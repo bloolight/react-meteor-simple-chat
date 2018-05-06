@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
-import { Button, ButtonGroup, Col, Grid, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Button, ButtonGroup, Col, Glyphicon, Grid, Row } from 'react-bootstrap';
 
 import { WithRootContext } from '../context/WithContext';
 import ChatList from './ChatList';
@@ -14,7 +15,7 @@ class ChatContainer extends Component {
   }
 
   handleChatClick(chat) {
-    this.props.history.push(`/chat/${chat._id}`);
+    this.props.history.push(`/chats/${chat._id}`);
   }
 
   handleCreateChat() {
@@ -30,7 +31,14 @@ class ChatContainer extends Component {
     return (
       <div className="chat-container">
         <Grid>
-          <h2>Hello, {user.username}</h2>
+          <h2>
+            Hello, {user.username}
+            <Link to={`users/${user._id}`}>
+              <Button bsStyle="link">
+                Edit user details <Glyphicon glyph="edit" />
+              </Button>
+            </Link>
+          </h2>
           <Row className="show-grid">
             <Col xs={12} md={8}>
               <ChatList user={user} handleChatClick={this.handleChatClick}></ChatList>

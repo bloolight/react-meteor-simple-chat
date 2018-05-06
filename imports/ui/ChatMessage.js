@@ -26,16 +26,23 @@ class ChatMessage extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.message) {
-      return this.clearAll();
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.message && nextProps.message.message !== prevState.message) {
+      return {
+        editing: true,
+        message: nextProps.message.message,
+        messageId: nextProps.message._id
+      };
+    }
+    if (!nextProps.message && prevState.message) {
+      return {
+        message: '',
+        editing: false,
+        messageId: null
+      };
     }
 
-    this.setState({
-      editing: true,
-      message: nextProps.message.message,
-      messageId: nextProps.message._id
-    });
+    return null;
   }
 
   handleChange(e) {
