@@ -23,6 +23,10 @@ div.jumbotron > .container {
   margin-left: 15px;
 }
 
+.main-chat-screen form.form-inline button {
+  margin-left: 5px;
+}
+
 .main-chat-screen .page-header h1 {
   font-size: 32px;
 }
@@ -43,8 +47,9 @@ div.jumbotron > .container {
 }
 
 .main-chat-screen p.message-text .badge.pull-right {
-  background-color: #fff;
+  background-color: #eee;
   color: #666;
+  cursor: pointer;
 }
 
 .dropdown-menu li.disabled {

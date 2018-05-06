@@ -7,10 +7,35 @@ class ChatMessage extends Component {
     super(props);
     this.state = {
       message: '',
+      messageId: null,
       editing: false
     }
+
+    this.clearAll = this.clearAll.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.renderDeleteButton = this.renderDeleteButton.bind(this);
+  }
+
+  clearAll() {
+    this.setState({
+      message: '',
+      editing: false,
+      messageId: null
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.message) {
+      return this.clearAll();
+    }
+
+    this.setState({
+      editing: true,
+      message: nextProps.message.message,
+      messageId: nextProps.message._id
+    });
   }
 
   handleChange(e) {
@@ -20,7 +45,22 @@ class ChatMessage extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.addMessage(this.state.message);
-    this.setState({ message: ''});
+    this.clearAll();
+  }
+
+  handleDelete() {
+    this.props.deleteMessage(this.state.messageId);
+  }
+
+  renderDeleteButton() {
+    return (
+      <Button
+        type="button"
+        bsStyle="danger"
+        onClick={this.handleDelete}>
+        Delete
+      </Button>
+    )
   }
 
   render() {
@@ -36,14 +76,17 @@ class ChatMessage extends Component {
             className="message-input"
           />
         </FormGroup>
-        <Button type="submit">Send message</Button>
+        <Button type="submit" disabled={this.state.message === ''}>Send message</Button>
+        { this.state.editing ? this.renderDeleteButton() : null }
       </Form>
     );
   }
 }
 
 ChatMessage.propTypes = {
-  addMessage: PropTypes.func.isRequired
+  addMessage: PropTypes.func.isRequired,
+  deleteMessage: PropTypes.func,
+  message: PropTypes.object
 };
 
 export default ChatMessage;

@@ -24,20 +24,42 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatId: null
+      chatId: null,
+      message: null,
+      user: null
     }
 
+    this.handleMessageClick = this.handleMessageClick.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
     this.addUser = this.addUser.bind(this);
   }
 
   componentWillMount() {
     const { id } = this.props.match.params;
-    this.setState({chatId: id})
+    const { user } = this.props.context.state;
+
+    this.setState({
+      chatId: id,
+      user
+    })
   }
 
   addMessage(message) {
-    const { user } = this.props.context.state;
+    const { user } = this.state;
+
+    if (this.state.message) {
+      ChatMessagesApi.editMessage(
+        this.state.message._id,
+        message,
+        (err) => {
+          if (err) {
+            return toast.error('There was an error');
+          }
+        }
+      );
+      return this.setState({ message: null });
+    }
 
     ChatMessagesApi.addMessage(
       this.state.chatId,
@@ -49,6 +71,29 @@ class Chat extends Component {
         }
       }
     );
+    this.setState({ message: null });
+  }
+
+  deleteMessage(messageId) {
+    ChatMessagesApi.deleteMessage(
+      messageId,
+      err => {
+        if (err) {
+          return toast.error('Error while deleting message');
+        }
+
+        this.setState({ message: null });
+      }
+    );
+  }
+
+  handleMessageClick(message) {
+    const { user } = this.state;
+    if (user._id !== message.userId) {
+      return;
+    }
+
+    this.setState({ message });
   }
 
   addUser(userId) {
@@ -75,7 +120,7 @@ class Chat extends Component {
           </Row>
           <Row className="show-grid">
             <Col xs={12} md={8}>
-              <MessageList messages={messages} />
+              <MessageList messages={messages} onMsgClick={this.handleMessageClick} />
             </Col>
             <Col xs={12} md={4}>
               <ListGroup>
@@ -92,10 +137,11 @@ class Chat extends Component {
             </Col>
           </Row>
         </Grid>
-        <ChatMessage addMessage={this.addMessage}/>
-
-        <pre>{JSON.stringify(chatRoomInfo, null, ' ')}</pre>
-        <pre>{JSON.stringify(messages, null, ' ')}</pre>
+        <ChatMessage
+          addMessage={this.addMessage}
+          deleteMessage={this.deleteMessage}
+          message={this.state.message}
+        />
       </div>
     );
   }

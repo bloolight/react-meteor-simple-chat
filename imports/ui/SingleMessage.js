@@ -10,7 +10,12 @@ const SingleMessage = props => {
   return (
     <React.Fragment>
       <p className='message-text'>
-        <Badge pullRight={message.userId === user._id}>{ message.message }</Badge>
+        <Badge
+          pullRight={message.userId === user._id}
+          onClick={props.onMsgClick.bind(null, message)}
+        >
+          { message.message }
+        </Badge>
       </p>
       <div className="clearfix"></div>
     </React.Fragment>
@@ -19,7 +24,8 @@ const SingleMessage = props => {
 
 SingleMessage.propTypes = {
   message: PropTypes.object.isRequired,
-  context: PropTypes.object.isRequired
+  context: PropTypes.object.isRequired,
+  onMsgClick: PropTypes.func
 };
 
 export default WithRootContext(SingleMessage);

@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Well } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import * as ChatRoomsApi from "../api/chatRooms";
@@ -15,15 +15,18 @@ class ChatList extends Component {
 
     return (
       <React.Fragment>
-        <ListGroup className="chats-list">
-          {chatRooms.map(chat => {
-            return (
-              <ListGroupItem key={chat._id} onClick={handleChatClick.bind(null, chat)}>
-                {chat.title} ({chat.members ? chat.members.length : 0} participants)
-              </ListGroupItem>
-            )
-          })}
-        </ListGroup>
+        {chatRooms.length > 0
+          ? <ListGroup className="chats-list">
+              {chatRooms.map(chat => {
+                return (
+                  <ListGroupItem key={chat._id} onClick={handleChatClick.bind(null, chat)}>
+                    {chat.title} ({chat.members ? chat.members.length : 0} participants)
+                  </ListGroupItem>
+                )
+              })}
+            </ListGroup>
+          : <Well bsSize="large">Create a chat and it will show up here</Well>
+        }
         <pre>{JSON.stringify(this.props.chatRooms, null, ' ')}</pre>
       </React.Fragment>
     );

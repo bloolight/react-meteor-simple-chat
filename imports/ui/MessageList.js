@@ -10,7 +10,15 @@ const MessageList = props => {
     <React.Fragment>
       { messages.length > 0
         ? <pre>
-            {messages.map(m => <SingleMessage key={m._id} message={m} />)}
+            {messages.map(m => {
+              return (
+                <SingleMessage
+                  key={m._id}
+                  message={m}
+                  onMsgClick={props.onMsgClick}
+                />
+              )
+            })}
           </pre>
         : <Well bsSize="large">Add a message and it will show up here</Well>
       }
@@ -19,7 +27,8 @@ const MessageList = props => {
 };
 
 MessageList.propTypes = {
-  messages: PropTypes.array
+  messages: PropTypes.array,
+  onMsgClick: PropTypes.func
 };
 
 export default MessageList;
